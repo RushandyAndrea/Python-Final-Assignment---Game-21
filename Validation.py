@@ -101,7 +101,7 @@ def get_string(prompt):
     :return:
     """
     while True:
-        user_input = input(f'{prompt}: ')
+        user_input = input(f'{prompt} ')
 
         if user_input > '':
             return user_input
