@@ -173,6 +173,24 @@ def display_winners(players, dealer_cards_total):
 
     :return:
     """
+    total_winner = 0 # used to determine if the dealer is the automatic winner
+
+    for player_name, player_info in players.items():
+
+        cash, cards, cards_total, bet = player_info.values()
+
+        if cash < 0.25:
+            continue
+
+        if dealer_cards_total > 21: # dealer exceeded 21
+            if cards_total <= 21:  # as long as the player is still in the game
+                total_winner += 1
+                player_info['cash'] += bet  # player won so increase their cash by the bet
+                print(player_name, ' is a winner!')
+            else:
+                player_info['cash'] -= bet  # player lost to lower their cash by the bet
+        else:
+
 
 
 """
