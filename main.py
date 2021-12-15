@@ -25,34 +25,6 @@ def welcome():
     print()
 
 
-def display_menu():
-    print('COMMAND MENU')
-    print('1 - Add player(s)')
-    print('2 - Play again')
-    print('0 - Exit program')
-    print()
-
-
-def play_game():
-    """
-
-    :return: n/a
-    """
-
-
-def play_round(players):
-    """
-
-    :param players:
-    :return:
-    """
-    players = {}
-    Cards.setup_new_round(players)
-    Cards.deal_to_players(players)
-    dealer_cards_total = Cards.dealer_to_dealer(players)
-    Cards.display_winners(players, dealer_cards_total)
-
-
 def main():
     """
 
@@ -62,9 +34,11 @@ def main():
     welcome()
     Cards.rules()
     Cards.get_players(players)
-    pl
-    Cards.setup_new_round(players)
-    Cards.get_yn_input()
+
+    while True:
+        Cards.play_round(players)
+        if not Cards.get_yes_no('Do you want to play another round? Y=Yes N=No'):
+            break
 
 
 if __name__ == "__main__":

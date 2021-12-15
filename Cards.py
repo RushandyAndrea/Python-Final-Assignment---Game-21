@@ -12,18 +12,44 @@ __version__ = '1.0'
 __date__ = 'December 10th, 2021'
 __status__ = 'Development'
 
-import Validation as val
 import random
 
 LINE_LENGTH = 75
 
 
-def get_yn_input():
+def get_string(prompt):
     """
-
+    This take user input.
+    :param prompt:
     :return:
     """
-    val.get_yes_no(prompt='Do you want to play another round? Yes=y No=n')
+    while True:
+        user_input = input(f'{prompt} ')
+
+        if user_input > '':
+            return user_input
+        else:
+            print(f'Invalid input: Please enter a value!')
+
+
+def get_yes_no(prompt='(y=Yes or n=No)'):
+    """
+    Here is where the function ask for user input.
+    :param prompt:
+    :return: exits a function and instructs Python to continue executing the main program.
+    """
+    while True:
+        if prompt == '':
+            user_input = input('(y=yes or n=no): ').lower()
+        else:
+            user_input = input(f'{prompt} (y=yes or n=no): ').lower()
+
+        if user_input in ['y', 'yes']:
+            return True
+        elif user_input in ['n', 'no']:
+            return False
+        else:
+            print('Invalid input: Please enter a y=yes, or n=no')
 
 
 def rules():
@@ -52,7 +78,7 @@ def get_players(players):
     print()
 
     while True:
-        player_name = val.get_string(
+        player_name = get_string(
             "Enter the player's first name (without spaces) and type 'done' when you are done: ").title()
 
         if player_name == 'Done':
@@ -99,9 +125,9 @@ def deal_to_players(players):
 
     :return:
     """
-    for player_name, player_info in players.items(): # get the player_name (key) and player_info (value)
+    for player_name, player_info in players.items():  # get the player_name (key) and player_info (value)
 
-        cash, cards, cards_total, bet = player_info.values() # unpack the sub dictionary of the current player's data
+        cash, cards, cards_total, bet = player_info.values()  # unpack the sub dictionary of the current player's data
 
         if cash < 0.25:  # skip the current player if they are out of money
             continue
@@ -116,11 +142,22 @@ def deal_to_players(players):
         cash, cards, cards_total, bet = player_info.values()
         display_cards(cards)
 
+        while True:
+            if get_yes_no('Do you want to play another round? y=Yes n=No'):
+                deal_card(player_info)
+                if cards_total > 21:
+                    print('Busted, better luck next time')
+                    break
+            else:
+                print(f'Player {player_name} is at hold, waiting for next turn.')
 
-def dealer_to_dealer(players):
+                # display hold if double bet
+
+
+def deal_to_dealer(players):
     """
 
-    :return:
+    :return: dealer_cards_total
     """
     num_players_out = 0
     highest_hand = 0
@@ -131,8 +168,6 @@ def dealer_to_dealer(players):
 
         if cards_total > 21:
             num_players_out += 1
-            print('Oh ooh, Try again later')
-            print('')
         elif cards_total > highest_hand:
             highest_hand = cards_total
 
@@ -154,6 +189,15 @@ def dealer_to_dealer(players):
         dealer_cards.append(card)
         dealer_cards_total += card
 
+        if dealer_cards_total > 21:
+            display_cards(dealer_cards)
+            print('Dealer is busted! He/She is out!')
+
+        if dealer_cards_total > highest_hand:
+            break
+
+    return dealer_cards_total
+
 
 def display_cards(cards):
     """
@@ -173,7 +217,7 @@ def display_winners(players, dealer_cards_total):
 
     :return:
     """
-    total_winner = 0 # used to determine if the dealer is the automatic winner
+    total_winner = 0  # used to determine if the dealer is the automatic winner
 
     for player_name, player_info in players.items():
 
@@ -182,7 +226,7 @@ def display_winners(players, dealer_cards_total):
         if cash < 0.25:
             continue
 
-        if dealer_cards_total > 21: # dealer exceeded 21
+        if dealer_cards_total > 21:  # dealer exceeded 21
             if cards_total <= 21:  # as long as the player is still in the game
                 total_winner += 1
                 player_info['cash'] += bet  # player won so increase their cash by the bet
@@ -190,10 +234,25 @@ def display_winners(players, dealer_cards_total):
             else:
                 player_info['cash'] -= bet  # player lost to lower their cash by the bet
         else:
+            if play # i have pictures of this
 
 
+def play_round(players):
+    """
 
-"""
-def get_yn_input(promp='')
+    :param:
+    :return:
+    """
+    setup_new_round(players)
+    deal_to_players(players)
+# dealer_cards_total = deal_to_dealer(players)
+# display_winners(players, dealer_cards_total)
 
-"""
+
+def display_round_summary(players):
+    """
+
+    :param players:
+    :return:
+    """
+    print(f'End')
