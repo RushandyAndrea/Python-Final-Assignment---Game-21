@@ -234,7 +234,12 @@ def display_winners(players, dealer_cards_total):
             else:
                 player_info['cash'] -= bet  # player lost to lower their cash by the bet
         else:
-            if play # i have pictures of this
+            if cards_total <= 21 and cards_total >= dealer_cards_total:
+                print('Congrats! You have won the game!')
+                return +cash
+            else:
+                print('Sorry you lost. Better luck next time!')
+                return -cash
 
 
 def play_round(players):
