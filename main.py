@@ -37,7 +37,7 @@ def main():
 
     while True:
         Cards.play_round(players)
-        if not Cards.get_yes_no('Do you want to play another round? Y=Yes N=No'):
+        if not Cards.get_yes_no('Do you want another card? y=Yes n=No'):
             break
 
 

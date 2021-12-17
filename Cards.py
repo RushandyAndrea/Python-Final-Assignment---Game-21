@@ -142,16 +142,16 @@ def deal_to_players(players):
         cash, cards, cards_total, bet = player_info.values()
         display_cards(cards)
 
-        while True:
-            if get_yes_no('Do you want to play another round? y=Yes n=No'):
-                deal_card(player_info)
-                if cards_total > 21:
-                    print('Busted, better luck next time')
-                    break
-            else:
-                print(f'Player {player_name} is at hold, waiting for next turn.')
+        choice = get_yes_no('Do you want another card? y=Yes n=No')
+        if choice in ['y', 'yes']:
+            deal_card(player_info)
+            if cards_total > 21:
+                print('Busted, better luck next time')
+                break
+        else:
+            print(f'Player {player_name} is at hold, waiting for next turn.')
 
-                # display hold if double bet
+            # display hold if double bet
 
 
 def deal_to_dealer(players):
@@ -250,8 +250,9 @@ def play_round(players):
     """
     setup_new_round(players)
     deal_to_players(players)
-# dealer_cards_total = deal_to_dealer(players)
-# display_winners(players, dealer_cards_total)
+    dealer_cards_total = deal_to_dealer(players)
+    deal_to_dealer(players)
+    display_winners(players, dealer_cards_total)
 
 
 def display_round_summary(players):
